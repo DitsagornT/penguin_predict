@@ -9,19 +9,8 @@ with open('model_penguin_66130701714.pkl', 'rb') as file:
 
 # Function to make predictions
 def predict_penguin(sex, island, bill_length, bill_depth, flipper_length, body_mass):
-    try:
-        # Check if the input labels are valid
-        sex_transformed = sex_encoder.transform([sex])[0]
-    except ValueError:
-        sex_transformed = sex_encoder.transform(['Male'])[0]  # Default to Male if unseen label
-
-    try:
-        island_transformed = island_encoder.transform([island])[0]
-    except ValueError:
-        return "Error: Island label not recognized."
-        
     # Prepare the input data
-    input_data = np.array([[sex_transformed, island_transformed, bill_length, bill_depth, flipper_length, body_mass]])
+    input_data = np.array([[sex_encoder.transform([sex])[0], island_encoder.transform([island])[0], bill_length, bill_depth, flipper_length, body_mass]])
     
     # Predict the species
     species_pred = model.predict(input_data)
@@ -33,8 +22,8 @@ def predict_penguin(sex, island, bill_length, bill_depth, flipper_length, body_m
 st.title("Penguin Species Prediction")
 
 # Get user inputs
-sex = st.selectbox("Sex of the penguin", ['Male', 'Female'])
-island = st.selectbox("Island of the penguin", ['Torgersen', 'Biscoe', 'Dream'])
+sex = st.selectbox("Sex of the penguin", sex_encoder.classes_)
+island = st.selectbox("Island of the penguin",island_encoder.classes_)
 bill_length = st.slider("Bill Length (mm)", 30.0, 70.0, 45.0)
 bill_depth = st.slider("Bill Depth (mm)", 10.0, 25.0, 15.0)
 flipper_length = st.slider("Flipper Length (mm)", 170.0, 230.0, 200.0)
