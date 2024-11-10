@@ -9,14 +9,23 @@ with open('model_penguin_66130701714.pkl', 'rb') as file:
 
 # Function to make predictions
 def predict_penguin(sex, island, bill_length, bill_depth, flipper_length, body_mass):
-    # Prepare the input data
-    input_data = np.array([[sex_encoder.transform([sex])[0], island_encoder.transform([island])[0], bill_length, bill_depth, flipper_length, body_mass]])
+    try:
+        # Check if the input labels are valid
+        sex_transformed = sex_encoder.transform([sex])[0]
+        island_transformed = island_encoder.transform([island])[0]
+        
+        # Prepare the input data
+        input_data = np.array([[sex_transformed, island_transformed, bill_length, bill_depth, flipper_length, body_mass]])
+        
+        # Predict the species
+        species_pred = model.predict(input_data)
+        species = species_encoder.inverse_transform(species_pred)[0]
+        
+        return species
     
-    # Predict the species
-    species_pred = model.predict(input_data)
-    species = species_encoder.inverse_transform(species_pred)[0]
-    
-    return species
+    except ValueError as e:
+        # If there is an unseen label, handle it
+        return f"Error: {str(e)}"
 
 # Streamlit UI
 st.title("Penguin Species Prediction")
