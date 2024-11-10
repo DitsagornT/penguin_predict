@@ -29,11 +29,6 @@ def predict_penguin(sex, island, bill_length, bill_depth, flipper_length, body_m
     
     return species
 
-    
-    except ValueError as e:
-        # If there is an unseen label, handle it
-        return f"Error: {str(e)}"
-
 # Streamlit UI
 st.title("Penguin Species Prediction")
 
