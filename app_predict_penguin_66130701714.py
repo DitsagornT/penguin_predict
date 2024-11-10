@@ -12,23 +12,23 @@ def predict_penguin(sex, island, bill_length, bill_depth, flipper_length, body_m
     try:
         # Check if the input labels are valid
         sex_transformed = sex_encoder.transform([sex])[0]
+    except ValueError:
+        sex_transformed = sex_encoder.transform(['Male'])[0]  # Default to Male if unseen label
+
+    try:
         island_transformed = island_encoder.transform([island])[0]
+    except ValueError:
+        return "Error: Island label not recognized."
         
-        # Debugging outputs
-        st.write(f"Sex Transformed: {sex_transformed}")
-        st.write(f"Island Transformed: {island_transformed}")
-        
-        # Prepare the input data
-        input_data = np.array([[sex_transformed, island_transformed, bill_length, bill_depth, flipper_length, body_mass]])
-        
-        # Debugging input data
-        st.write(f"Input Data: {input_data}")
-        
-        # Predict the species
-        species_pred = model.predict(input_data)
-        species = species_encoder.inverse_transform(species_pred)[0]
-        
-        return species
+    # Prepare the input data
+    input_data = np.array([[sex_transformed, island_transformed, bill_length, bill_depth, flipper_length, body_mass]])
+    
+    # Predict the species
+    species_pred = model.predict(input_data)
+    species = species_encoder.inverse_transform(species_pred)[0]
+    
+    return species
+
     
     except ValueError as e:
         # If there is an unseen label, handle it
