@@ -53,4 +53,4 @@ x_new['sex'] = sex_encoder.transform(x_new['sex'])
 # Button to make the prediction
 if st.button('Predict'):
     species = predict_penguin(x_new.iloc[0])  # Pass the first row of the DataFrame
-    st.write(f"The predicted species is: {species[0]}")
+    st.write(f"The predicted species is: {species}")
