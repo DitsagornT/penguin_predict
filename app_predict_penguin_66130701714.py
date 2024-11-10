@@ -20,6 +20,20 @@ def predict_penguin(sex, island, bill_length, bill_depth, flipper_length, body_m
     
     return species
 
+def safe_transform(encoder, value):
+    if value in encoder.classes_:
+        return encoder.transform([value])[0]
+    else:
+        st.error(f"Unseen label '{value}' encountered!")
+        return encoder.transform([encoder.classes_[0]])[0]  # Default to the first class
+
+sex_value = safe_transform(sex_encoder, sex)
+island_value = safe_transform(island_encoder, island)
+
+# Prepare input data
+input_data = np.array([[sex_value, island_value, bill_length, bill_depth, flipper_length, body_mass]])
+
+
 # Streamlit UI
 st.title("Penguin Species Prediction")
 
