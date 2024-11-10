@@ -1,9 +1,3 @@
-%%writefile app_predict_penguin_66130701714.py
-# app_predict_penguin.py
-
-import streamlit as st
-import pickle
-import numpy as np
 import pandas as pd
 
 # Load the pre-trained model and encoders
@@ -14,11 +8,11 @@ with open('model_penguin_66130701714.pkl', 'rb') as file:
 def predict_penguin(sex, island, bill_length, bill_depth, flipper_length, body_mass):
     # Prepare the input data
     input_data = np.array([[sex_encoder.transform([sex])[0], island_encoder.transform([island])[0], bill_length, bill_depth, flipper_length, body_mass]])
-    
+
     # Predict the species
     species_pred = model.predict(input_data)
     species = species_encoder.inverse_transform(species_pred)[0]
-    
+
     return species
 
 # Streamlit UI
@@ -36,4 +30,3 @@ body_mass = st.slider("Body Mass (g)", 2500.0, 6500.0, 4500.0)
 if st.button('Predict'):
     species = predict_penguin(sex, island, bill_length, bill_depth, flipper_length, body_mass)
     st.write(f"The predicted species is: {species}")
-
