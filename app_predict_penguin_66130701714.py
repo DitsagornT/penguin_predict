@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 
 # Load the pre-trained model and encoders
-with open('knn_penguin.pkl', 'rb') as file:
+with open('model_penguin.pkl', 'rb') as file:
     model, species_encoder, island_encoder, sex_encoder = pickle.load(file)
 
 # Function to make predictions
