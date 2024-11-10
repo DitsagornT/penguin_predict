@@ -14,8 +14,15 @@ def predict_penguin(sex, island, bill_length, bill_depth, flipper_length, body_m
         sex_transformed = sex_encoder.transform([sex])[0]
         island_transformed = island_encoder.transform([island])[0]
         
+        # Debugging outputs
+        st.write(f"Sex Transformed: {sex_transformed}")
+        st.write(f"Island Transformed: {island_transformed}")
+        
         # Prepare the input data
         input_data = np.array([[sex_transformed, island_transformed, bill_length, bill_depth, flipper_length, body_mass]])
+        
+        # Debugging input data
+        st.write(f"Input Data: {input_data}")
         
         # Predict the species
         species_pred = model.predict(input_data)
