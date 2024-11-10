@@ -8,15 +8,25 @@ with open('model_penguin_66130701714.pkl', 'rb') as file:
     model, species_encoder, island_encoder, sex_encoder = pickle.load(file)
 
 # Function to make predictions
+# Add some debugging statements to see what's going on
 def predict_penguin(sex, island, bill_length, bill_depth, flipper_length, body_mass):
     # Prepare the input data
     input_data = np.array([[sex_encoder.transform([sex])[0], island_encoder.transform([island])[0], bill_length, bill_depth, flipper_length, body_mass]])
     
+    # Debug: Print the transformed input data
+    st.write(f"Input data (encoded): {input_data}")
+
     # Predict the species
     species_pred = model.predict(input_data)
+
+    # Debug: Print the raw prediction output
+    st.write(f"Model prediction (encoded species): {species_pred}")
+
+    # Inverse transform to get the species name
     species = species_encoder.inverse_transform(species_pred)[0]
     
     return species
+
 
 # Streamlit UI
 st.title("Penguin Species Prediction")
